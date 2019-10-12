@@ -1,6 +1,5 @@
 package com.example.Controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.myBatisTest.Model.users;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
+@ResponseBody
+@RequestMapping("/test")
 public class myBatisController  {
 
 
@@ -24,13 +25,13 @@ public class myBatisController  {
     @RequestMapping("/test01")
     @ResponseBody
     public void myBatisTest () throws IOException {
-        String resource = "myBatis_config.xml";
+        String resource = "config/myBatis_config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            users user = sqlSession.selectOne("com.example.myBatisTest.Model.usersMapper.selectUsers", 1);
+            users user = sqlSession.selectOne("Mapper.usersMapper.selectUsers", 1);
             System.out.println(user);
         }finally {
             sqlSession.close();
